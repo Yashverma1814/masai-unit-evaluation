@@ -6,8 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
-    <div style="display: grid; grid-template-columns: repeat(2,50%); padding: 1% ;margin: 2%; border: 1px solid black;">
+<style>
+    #cont{
+        display: grid;
+        grid-template-columns: repeat(4,24%);
+        gap: 1%;
+        margin: 2%;
+    }
+    #cont>div{
+        border: 1px solid black;
+        text-align: center;
+        background-color: red;
+        border-radius: 10px;
+    }
+</style>
+<body style="background-color: black;">
+    <div style=" background-color: aqua; display: grid; grid-template-columns: repeat(2,50%); padding: 1% ;margin: 2%; border: 1px solid black;">
         <div>
             <h3><a href="home.html" style="color: black;">STAR WARS</a></h3>
         </div>
@@ -16,16 +30,36 @@
             <h3><a href="home.html" style="color: black;">HOME</a></h3>
         </div>
     </div>
+    <div id="cont"></div>
 </body>
 <script>
+    var cont = document.getElementById("cont");
     async function getData(){
         try{
             let res = await fetch("https://swapi.dev/api/films/?format=json");
             let data = await res.json();
             localStorage.setItem("result",res);
             console.log(data.results);
+            displayData(data.results);
         }catch(err){
             console.log("err");
+        }
+    }
+    function displayData(dataArr){
+        for(var i=0; i<dataArr.length; i++){
+            var card = document.createElement("div");
+            var title = document.createElement("h2");
+            title.textContent = "Title: "+dataArr[i].title;
+            var att1 = document.createElement("h4");
+            att1.textContent = "Director: "+dataArr[i].director;
+            var att2 = document.createElement("h4");
+            att2.textContent = "Producer: "+dataArr[i].producer;
+            var att3 = document.createElement("h4");
+            att3.textContent = "Episode Id: "+dataArr[i].episode_id;
+            var att4 = document.createElement("h4");
+            att4.textContent = "Release Date: "+dataArr[i].release_date;
+            card.append(title,att1,att2,att3,att4);
+            cont.append(card);
         }
     }
     getData();
