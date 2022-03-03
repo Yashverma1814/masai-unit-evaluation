@@ -17,4 +17,17 @@
         </div>
     </div>
 </body>
+<script>
+    async function getData(){
+        try{
+            let res = await fetch("https://swapi.dev/api/films/?format=json");
+            let data = await res.json();
+            localStorage.setItem("result",res);
+            console.log(data.results);
+        }catch(err){
+            console.log("err");
+        }
+    }
+    getData();
+</script>
 </html>

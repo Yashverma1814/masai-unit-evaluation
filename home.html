@@ -6,6 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    #container{
+        display: grid;
+        grid-template-columns: repeat(4,24%);
+        gap: 1%;
+        margin: 2%;
+    }
+    #container>div{
+        border: 1px solid black;
+        text-align: center;
+        background-color: bisque;
+        border-radius: 10px;
+    }
+</style>
 <body>
     <div style="display: grid; grid-template-columns: repeat(2,50%); padding: 1% ;margin: 2%; border: 1px solid black;">
         <div>
@@ -16,6 +30,41 @@
             <h3><a href="home.html" style="color: black;">HOME</a></h3>
         </div>
     </div>
-
+    <div id="container"></div>
 </body>
+<script>
+    var container = document.getElementById("container")
+    async function getData(){
+        localStorage.clear();
+        try{
+            let res = await fetch("https://swapi.dev/api/people/?format=json");
+            let data = await res.json();
+            localStorage.setItem("result",res);
+            console.log(data.results);
+            displayData(data.results);
+        }catch(err){
+            console.log("err");
+        }
+    }
+    function displayData(dataArr){
+        for(var i=0; i<dataArr.length; i++){
+            var card = document.createElement("div");
+            var name = document.createElement("h2");
+            name.textContent = "Name: "+dataArr[i].name;
+            var att1 = document.createElement("h4");
+            att1.textContent = "Height: "+dataArr[i].height;
+            var att2 = document.createElement("h4");
+            att2.textContent = "Mass: "+dataArr[i].mass;
+            var att3 = document.createElement("h4");
+            att3.textContent = "Hair Color: "+dataArr[i].hair_color;
+            var att4 = document.createElement("h4");
+            att4.textContent = "Skin Color"+dataArr[i].skin_color;
+            var att5 = document.createElement("h4");
+            att5.textContent = "Eye Color"+dataArr[i].eye_color;
+            card.append(name,att1,att2,att3,att4,att5);
+            container.append(card);
+        }
+    }
+    getData();
+</script>
 </html>
